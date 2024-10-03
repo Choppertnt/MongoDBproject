@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submit Data</title>
+    <!-- เพิ่ม Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .error { color: red; }
+        /* เพิ่มสไตล์เพิ่มเติม */
+        .form-container {
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .form-title {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="form-container">
+        <!-- หัวฟอร์มที่มีสไตล์ของ Bootstrap -->
+        <h1 class="form-title">Order Details</h1>
+        
+        <form action="/submit" method="POST">
+            <div class="mb-3">
+                <label for="customer_id" class="form-label">Customer ID:</label>
+                <input type="text" class="form-control" id="customer_id" name="customer_id" value="{{ customer_id }}" required>
+                <div class="error">{{ errors.get('customer_id', '') }}</div>
+            </div>
+
+            <div class="mb-3">
+                <label for="phone_number" class="form-label">Phone Number:</label>
+                <input type="text" class="form-control" id="phone_number" name="phone_number" value="{{ phone_number }}" required>
+                <div class="error">{{ errors.get('phone_number', '') }}</div>
+            </div>
+
+            <!-- Product section -->
+            <div id="product-container">
+                {% for product_item in product_data %}
+                <div class="mb-3">
+                    <label for="product" class="form-label">Product:</label>
+                    <select class="form-select" name="product" required>
+                        <option value="">Select a product</option>
+                        <option value="OPPO" {% if product_item.product == 'OPPO' %}selected{% endif %}>OPPO</option>
+                        <option value="SAMSUNG" {% if product_item.product == 'SAMSUNG' %}selected{% endif %}>SAMSUNG</option>
+                        <option value="IPHONE" {% if product_item.product == 'IPHONE' %}selected{% endif %}>IPHONE</option>
+                        <option value="VIVO" {% if product_item.product == 'VIVO' %}selected{% endif %}>VIVO</option>
+                        <option value="ASUS" {% if product_item.product == 'ASUS' %}selected{% endif %}>ASUS</option>
+                        <option value="REALME" {% if product_item.product == 'REALME' %}selected{% endif %}>REALME</option>
+                        <option value="XIAOMI" {% if product_item.product == 'XIAOMI' %}selected{% endif %}>XIAOMI</option>
+                        <option value="RAZER" {% if product_item.product == 'RAZER' %}selected{% endif %}>RAZER</option>
+                    </select>
+                    <div class="error">{{ errors.get('product', '') }}</div>
+                </div>
+                <div class="mb-3">
+                    <label for="quantity" class="form-label">Quantity:</label>
+                    <input type="number" class="form-control" name="quantity" min="1" value="{{ product_item.unit }}" required>
+                    <div class="error">{{ errors.get('quantity', '') }}</div>
+                </div>
+                <div class="mb-3">
+                    <label for="price" class="form-label">Price:</label>
+                    <input type="number" class="form-control" name="price" min="0" step="0.01" value="{{ product_item.price }}" required>
+                    <div class="error">{{ errors.get('price', '') }}</div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <button type="button" id="add-product" class="btn btn-secondary mb-3">+ Add Product</button>
+            <br>
+            <input type="submit" class="btn btn-primary" value="Submit">
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('add-product').addEventListener('click', function() {
+            const productContainer = document.getElementById('product-container');
+            const newProductGroup = document.createElement('div');
+            newProductGroup.className = 'mb-3';
+            newProductGroup.innerHTML = `
+                <label for="product" class="form-label">Product:</label>
+                <select class="form-select" name="product" required>
+                    <option value="">Select a product</option>
+                    <option value="OPPO">OPPO</option>
+                    <option value="SAMSUNG">SAMSUNG</option>
+                    <option value="IPHONE">IPHONE</option>
+                    <option value="VIVO">VIVO</option>
+                    <option value="ASUS">ASUS</option>
+                    <option value="REALME">REALME</option>
+                    <option value="XIAOMI">XIAOMI</option>
+                    <option value="RAZER">RAZER</option>
+                </select>
+                <div class="error"></div>
+
+                <label for="quantity" class="form-label">Quantity:</label>
+                <input type="number" class="form-control" name="quantity" min="1" required>
+                <div class="error"></div>
+
+                <label for="price" class="form-label">Price:</label>
+                <input type="number" class="form-control" name="price" min="0" step="0.01" required>
+                <div class="error"></div>
+            `;
+            productContainer.appendChild(newProductGroup);
+        });
+    </script>
+
+    <!-- เพิ่ม Bootstrap JS (หากต้องการใช้งานฟังก์ชัน JS ของ Bootstrap) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
