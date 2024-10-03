@@ -1,11 +1,12 @@
 from flask import Flask, render_template, request, redirect , flash
 from pymongo import MongoClient
 import re
+import os
 
 app = Flask(__name__)
 
 # เชื่อมต่อกับ MongoDB
-client = MongoClient('mongodb://localhost:27017/')
+client = MongoClient('mongodb+srv://test:1234@cluster0.tlwua.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
 db = client['user_database']
 collection = db['user_data']
 
@@ -93,4 +94,4 @@ def success():
     return render_template('success.html')
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=int(os.environ.get("PORT", 5000)), debug=True)
