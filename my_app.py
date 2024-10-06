@@ -20,8 +20,9 @@ def form():
 
 @app.route('/submit', methods=['POST'])
 def submit_data():
-    customer_id = request.form['customer_id']
+    customername = request.form['customername']
     phone_number = request.form['phone_number']
+    sale_date =request.form['sale_date']
 
     product_data = []
 
@@ -51,9 +52,12 @@ def submit_data():
                 'unit': int(quantity),
                 'price': float(price)
             })
-    if not customer_id:
+    if not customername:
         errors['name'] = 'Please enter your name.'
     
+    if not sale_date:
+        errors['sale_date'] = 'Please enter sale_date'
+
     if not product:
         errors['product'] = 'Please enter a product.'
 
@@ -74,7 +78,8 @@ def submit_data():
     
     if errors:
         return render_template('form.html', 
-                               customer_id=customer_id, 
+                               sale_date = sale_date,
+                               customername=customername, 
                                phone_number=phone_number, 
                                product_data=product_data,
                                errors = errors
@@ -83,7 +88,7 @@ def submit_data():
 
 
 
-    user_data = {'customer_id': customer_id,'phone_number':phone_number,'product':product_data}
+    user_data = {'sale_date': sale_date ,'customername': customername,'phone_number':phone_number,'product':product_data}
     
     collection.insert_one(user_data)
     

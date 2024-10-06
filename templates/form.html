@@ -31,9 +31,9 @@
         
         <form action="/submit" method="POST">
             <div class="mb-3">
-                <label for="customer_id" class="form-label">Customer ID:</label>
-                <input type="text" class="form-control" id="customer_id" name="customer_id" value="{{ customer_id }}" required>
-                <div class="error">{{ errors.get('customer_id', '') }}</div>
+                <label for="customer_id" class="form-label">Customername:</label>
+                <input type="text" class="form-control" id="customername" name="customername" value="{{ customername }}" required>
+                <div class="error">{{ errors.get('customername', '') }}</div>
             </div>
 
             <div class="mb-3">
@@ -41,6 +41,13 @@
                 <input type="text" class="form-control" id="phone_number" name="phone_number" value="{{ phone_number }}" required>
                 <div class="error">{{ errors.get('phone_number', '') }}</div>
             </div>
+
+            <div class="mb-3">
+                <label for="sale_date" class="form-label">Sale Date:</label>
+                <input type="date" class="form-control" id="sale_date" name="sale_date" required>
+                <div class="error">{{ errors.get('sale_date', '') }}</div>
+            </div>
+
 
             <!-- Product section -->
             <div id="product-container">
