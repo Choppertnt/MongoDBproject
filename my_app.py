@@ -2,8 +2,7 @@ from flask import Flask, render_template, request, redirect , flash
 from pymongo import MongoClient
 import re
 import os
-from multiprocessing import Process
-import papermill as pm 
+from upload_toPostgreSQL import upload_data 
 
 app = Flask(__name__)
 
@@ -94,9 +93,8 @@ def submit_data():
     
     collection.insert_one(user_data)
     
+    upload_data()
 
-    process = Process(target=run_notebook)
-    process.start()
 
     return redirect('/success')
 
@@ -108,12 +106,7 @@ def success():
 
 
 
-def run_notebook():
-    try:
-        pm.execute_notebook('ตัวทดสอบที่ 1.ipynb', None)  
-        print("รัน Notebook สำเร็จ")
-    except Exception as e:
-        print(f"รัน Notebook ไม่สำเร็จ: {e}")
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=int(os.environ.get("PORT", 5000)), debug=False, use_reloader=False)
