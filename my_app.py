@@ -2,13 +2,17 @@ from flask import Flask, render_template, request, redirect , flash
 from pymongo import MongoClient
 import re
 import os
+from dotenv import load_dotenv
+load_dotenv()
+mongo_uri = os.getenv("MONGO_URI")
+mongo_database = os.getenv("MONGO_DATABASE")
+mongo_collection = os.getenv("MONGO_COLLECTION")
 
 app = Flask(__name__)
 
-# เชื่อมต่อกับ MongoDB
-client = MongoClient('mongodb+srv://test:1234@cluster0.tlwua.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
-db = client['user_database']
-collection = db['user_data']
+client = MongoClient(mongo_uri)
+db = client[mongo_database]
+collection = db[mongo_collection]
 
 app.secret_key = 'jachaninat'
 
